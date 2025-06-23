@@ -1,0 +1,87 @@
+[gd_scene load_steps=10 format=3 uid="uid://xndc23i8aa4k"]
+
+[ext_resource type="PackedScene" uid="uid://b7xisuygat2nu" path="res://smile.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cl0kvsv8hd4nx" path="res://button.gd" id="2_7mycd"]
+[ext_resource type="Script" uid="uid://c6b7e3q3g8ikh" path="res://score.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://cixsb657a4wsy" path="res://achievement.gd" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://d32e4pxix6mlo" path="res://spawn_timer.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://cisd44jytpk1s" path="res://you_won.gd" id="6_272bh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
+font_size = 76
+
+[sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
+font_size = 121
+
+[sub_resource type="LabelSettings" id="LabelSettings_5vw27"]
+font_size = 133
+shadow_size = 26
+shadow_color = Color(0, 0, 0, 0.572549)
+shadow_offset = Vector2(3.755, 3.275)
+
+[node name="Main" type="Node2D"]
+
+[node name="Smile" parent="." instance=ExtResource("1_ig7tw")]
+position = Vector2(794, 451)
+
+[node name="Button" type="Button" parent="."]
+z_index = 100
+offset_left = 514.0
+offset_top = 62.0
+offset_right = 1080.0
+offset_bottom = 222.0
+theme_override_font_sizes/font_size = 111
+text = "Press Me"
+script = ExtResource("2_7mycd")
+
+[node name="Score" type="Label" parent="."]
+z_index = 100
+offset_left = 343.0
+offset_top = 235.0
+offset_right = 1269.0
+offset_bottom = 340.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_1bvp3")
+horizontal_alignment = 1
+script = ExtResource("3_h2yge")
+
+[node name="Achievement" type="Label" parent="." node_paths=PackedStringArray("button")]
+visible = false
+z_index = 100
+offset_left = 227.0
+offset_top = 535.0
+offset_right = 1373.0
+offset_bottom = 748.0
+label_settings = SubResource("LabelSettings_h2yge")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("4_1bvp3")
+button = NodePath("../Button")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+script = ExtResource("5_lquwl")
+smile_scene = ExtResource("1_ig7tw")
+
+[node name="YouWon" type="Label" parent="."]
+visible = false
+z_index = 100
+offset_left = 1.0
+offset_top = 310.0
+offset_right = 1596.0
+offset_bottom = 537.0
+text = "You Won the Game!"
+label_settings = SubResource("LabelSettings_5vw27")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_272bh")
+
+[connection signal="pressed" from="Button" to="Score" method="_on_button_pressed"]
+[connection signal="pressed" from="Button" to="Achievement" method="_on_button_pressed"]
+[connection signal="game_won" from="Score" to="Button" method="_on_score_game_won"]
+[connection signal="game_won" from="Score" to="Score" method="_on_game_won"]
+[connection signal="game_won" from="Score" to="Achievement" method="_on_score_game_won"]
+[connection signal="game_won" from="Score" to="SpawnTimer" method="_on_score_game_won"]
+[connection signal="game_won" from="Score" to="YouWon" method="_on_score_game_won"]
+[connection signal="timeout" from="SpawnTimer" to="SpawnTimer" method="_on_timeout"]

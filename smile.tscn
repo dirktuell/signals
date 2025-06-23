@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7xisuygat2nu"]
+
+[ext_resource type="Script" uid="uid://bc10bql81vj4e" path="res://smile.gd" id="1_esncw"]
+[ext_resource type="Texture2D" uid="uid://bcb1kipi4npva" path="res://PhysicsCharacter.png" id="1_g3mer"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_esncw"]
+size = Vector2(80, 80)
+
+[node name="Smile" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_esncw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_g3mer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_esncw")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(1.90735e-06, -0.500004)
+scale = Vector2(12.9, 12.771)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
